@@ -1,4 +1,4 @@
-let lm=4
+
 async function getPostData() {
     const url = 'data.json';
     const response = await fetch(url);
@@ -11,22 +11,22 @@ async function getPostData() {
       const postCard = document.createElement('article');
       const postHeader = document.createElement('div');
       const postDitels = document.createElement('div'),
-      likesInfo = document.createElement('div');
+            likesInfo = document.createElement('div');
            
       
       const profileImage = document.createElement('img'),
-      name = document.createElement ('h5'),
-      date = document.createElement('p'),
-      img = document.createElement('img'),
-      caption = document.createElement('p'),
-      likes = document.createElement('spam'),
-      heart = document.createElement('img'),
-      socialMedia= document.createElement('img');
+            name = document.createElement ('h5'),
+            date = document.createElement('p'),
+            img = document.createElement('img'),
+            caption = document.createElement('p'),
+            likes = document.createElement('spam'),
+            heart = document.createElement('img'),
+            socialMedia= document.createElement('img');
 
 
       profileImage.src = post.profile_image
       name.innerHTML = post.name
-      date.innerHTML =  post.date 
+      ////date.innerHTML =  post.date 
       img.src =  post.image
       caption.innerHTML = post.caption
       likes.innerHTML = post.likes
@@ -34,11 +34,18 @@ async function getPostData() {
 
       if (post.source_type == "facebook"){
         socialMedia.src ="icons/facebook.svg"
-    }
-    else {
+      }
+      else {
         socialMedia.src="icons/instagram-logo.svg"
-    }
-     
+      }
+
+      const postDate = new Date(post.data);
+      const day_month_year = {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      };
+      date.innerHTML = postDate.toLocaleString("en-GB", day_month_year);
 
       postCard.classList.add('post');
       postHeader.classList.add('post-header')
@@ -51,25 +58,25 @@ async function getPostData() {
       caption.classList.add('caption')
       likesInfo.classList.add("likes")
 
-    
+      
       postHeader.appendChild(profileImage)
       postHeader.appendChild(name)
       postHeader.appendChild(date)
       postHeader.appendChild(socialMedia)
-
+      
       likesInfo.appendChild(heart)
       likesInfo.appendChild(likes)
+      
       postDitels.appendChild(img)
       postDitels.appendChild(caption)
       postDitels.appendChild(likesInfo)
-
+      
   
       postCard.appendChild(postHeader);
       postCard.appendChild(postDitels);
          
 
                 postCard.addEventListener('click', ()=>{
-                    
                     const big_post = document.createElement("div"),
                           post_Info = document.createElement("div");
                     
@@ -82,6 +89,7 @@ async function getPostData() {
                     big_post.className = "big_post";
                     big_post.id ='big_post'
                     big_img.className = "big_img";
+                    
                     
 
                     big_post.appendChild(big_img);
@@ -110,19 +118,20 @@ async function getPostData() {
     const app = document.querySelector('#posts');
     const posts = await getPostData();
     //console.log(renderPosts(app, posts))
-    let  post=renderPosts(app, posts);
-    let loadMore = document.getElementById('load-more');
-        maxPosts = 4;
-        loadePosts = 4;
-        hiddenClass='hiddenStyle';
 
+    let  post=renderPosts(app, posts);
+    let loadMore = document.getElementById('load-more'),
+        maxPosts = 4,
+        loadePosts = 4,
+        hiddenClass='hiddenStyle';
         post.forEach(function (post, index) {
         //console.log(post.innerText, index);
         if (index > maxPosts - 1) {
             post.classList.add(hiddenClass);
-        }});
-        loadMore.addEventListener("click", function () {
+        }})  
+        loadMore.addEventListener("click", function () {  
             [].forEach.call(document.querySelectorAll("." + hiddenClass), function ( post,index) {
+              console.log(index);
                 if (index < loadePosts) {
                     post.classList.remove(hiddenClass);
                 }
